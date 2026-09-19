@@ -1,12 +1,37 @@
 import hashlib
-password = input("パスワードを入力")
-print(f"base_pass: {password}")
-password_bytes = password.encode()
-password_sha256 = hashlib.sha256(password_bytes)
-hex_password = password_sha256.hexdigest()
-print(f"result_pass: {hex_password}")
-input_pass = input("パスワードを入力")
-if hashlib.sha256(input_pass.encode()).hexdigest() == hex_password:
-    print("success")
-else:
-    print("failed")
+
+class Hash:
+    def __init__(self,password):
+        self.password = password
+
+    def hashing(self):
+        self.hash_pass = hashlib.sha256(self.password.encode()).hexdigest()
+        return self.hash_pass
+
+    def plain_txt_show(self):
+        return f"plain_txt{self.hash_pass}"
+
+    def judge(self):
+        while True:
+            password = hashlib.sha256(Hash.prompt().encode()).hexdigest()
+            if password == self.hash_pass:
+                return "success"
+            else:
+                return "failed"
+    
+    @staticmethod
+    def prompt():
+        while True:
+            password = input("パスワードを入力")
+            if password == "":
+                continue
+            else:
+                break
+        return password
+
+
+
+password = Hash.prompt()
+hash_code = Hash(password)
+hash_code.hashing()
+print(hash_code.judge())
